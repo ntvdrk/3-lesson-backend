@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# 1. Модель Profile с One-to-One связью с User
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=11, verbose_name="Номер телефона", blank=True)
@@ -11,7 +10,6 @@ class Profile(models.Model):
     def __str__(self):
         return f"Profile of {self.user}"
 
-# 2. Модель Category с выбором типов категорий
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Category Name")
     description = models.TextField(blank=True, verbose_name="Description")
@@ -24,7 +22,6 @@ class Category(models.Model):
         return str(self.name)
     
 
-# 3. Модель Product с Many-to-One связью с Category
 class Product(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Product Name")
     description = models.TextField(verbose_name="Product Description")
@@ -43,7 +40,6 @@ class Product(models.Model):
         return str(self.name)
 
 
-# 4. Промежуточная модель OrderItem для связи Many-to-Many между Product и Order
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
@@ -52,7 +48,6 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} of {self.product.name}"
 
-# 5. Модель Order с Many-to-Many связью через OrderItem
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
